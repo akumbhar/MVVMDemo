@@ -15,12 +15,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mViewModel = ViewModelProvider(this, ViewModelFactory()).get(MainViewModel::class.java)
+        mViewModel = ViewModelProvider(this, ViewModelFactory(this)).get(MainViewModel::class.java)
         mViewModel.getFacts()
         mViewModel.apiResponseLiveData.observe(this, Observer {
 
-            txtData.text = it
+            var stringBuffer = StringBuffer()
+            it.forEach {
 
+                stringBuffer.append("${it.title}\n")
+            }
+
+            txtData.text = stringBuffer.toString()
         })
     }
 }

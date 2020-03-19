@@ -4,28 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mvvmdiapplication.common.doLogE
+import com.example.mvvmdiapplication.repository.Fact
 import com.example.mvvmdiapplication.repository.MainRepository
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
-    private val apiResponseMutableLiveData:MutableLiveData<String> = MutableLiveData()
-    val apiResponseLiveData: LiveData<String> = apiResponseMutableLiveData
+    private val apiResponseMutableLiveData: MutableLiveData<List<Fact>> = MutableLiveData()
+    var apiResponseLiveData: LiveData<List<Fact>> = apiResponseMutableLiveData
 
-    fun getFacts(){
-        repository.getFacts { response, error ->
+    fun getFacts() {
+        apiResponseLiveData = repository.getFacts()
 
-            response?.let {
-                doLogE(it.toString())
-                apiResponseMutableLiveData.postValue(it.toString())
-
-            }
-
-            error?.let {
-                doLogE(it)
-                apiResponseMutableLiveData.postValue(it)
-
-            }
-
-        }
     }
 }

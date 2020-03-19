@@ -14,7 +14,7 @@ class RemoteDao {
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         val httpClient: OkHttpClient.Builder = OkHttpClient.Builder();
         httpClient.addInterceptor(loggingInterceptor)
         val retrofit: Retrofit = Retrofit.Builder()
