@@ -3,7 +3,7 @@ package com.example.mvvmdiapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmdiapplication.MainRepository
+import com.example.mvvmdiapplication.repository.MainRepository
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
