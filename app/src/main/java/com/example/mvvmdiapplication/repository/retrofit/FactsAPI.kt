@@ -1,10 +1,10 @@
 package com.example.mvvmdiapplication.repository
 
-import retrofit2.Call
+import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface FactsAPI {
 
     @GET("facts.json")
-    fun getFacts(): Call<APIResponse>
+    fun getFacts(): Observable<APIResponse>
 }

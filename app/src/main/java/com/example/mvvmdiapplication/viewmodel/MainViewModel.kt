@@ -3,7 +3,6 @@ package com.example.mvvmdiapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmdiapplication.common.doLogE
 import com.example.mvvmdiapplication.repository.Fact
 import com.example.mvvmdiapplication.repository.MainRepository
 

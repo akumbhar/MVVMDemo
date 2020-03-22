@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmdiapplication.repository.MainRepository
-import com.example.mvvmdiapplication.repository.RemoteDao
+import com.example.mvvmdiapplication.repository.retrofit.RemoteDao
 import com.example.mvvmdiapplication.repository.room.AppDatabase
-import com.example.mvvmdiapplication.repository.room.LocalDao
 
 class ViewModelFactory(val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
