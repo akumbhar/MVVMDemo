@@ -3,9 +3,10 @@ package com.example.mvvmdiapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmdiapplication.common.doLogE
-import com.example.mvvmdiapplication.repository.Fact
 import com.example.mvvmdiapplication.repository.MainRepository
+import com.example.mvvmdiapplication.repository.retrofit.Fact
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
@@ -13,7 +14,12 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     var apiResponseLiveData: LiveData<List<Fact>> = apiResponseMutableLiveData
 
     fun getFacts() {
-        apiResponseLiveData = repository.getFacts()
-
+        GlobalScope.launch {
+            try {
+                apiResponseMutableLiveData.postValue(repository.getFacts())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

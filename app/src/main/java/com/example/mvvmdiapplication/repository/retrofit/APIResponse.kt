@@ -1,4 +1,4 @@
-package com.example.mvvmdiapplication.repository
+package com.example.mvvmdiapplication.repository.retrofit
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

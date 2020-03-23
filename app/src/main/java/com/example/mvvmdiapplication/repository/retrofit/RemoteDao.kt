@@ -1,8 +1,7 @@
-package com.example.mvvmdiapplication.repository
+package com.example.mvvmdiapplication.repository.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -14,7 +13,7 @@ class RemoteDao {
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
-        //loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         val httpClient: OkHttpClient.Builder = OkHttpClient.Builder();
         httpClient.addInterceptor(loggingInterceptor)
         val retrofit: Retrofit = Retrofit.Builder()
@@ -25,7 +24,7 @@ class RemoteDao {
         service = retrofit.create(FactsAPI::class.java)
     }
 
-    fun getFactsFromAPI(retrofitCallback: Callback<APIResponse>) {
-        service.getFacts().enqueue(retrofitCallback)
+    suspend fun getFactsFromAPI(): APIResponse {
+        return service.getFacts()
     }
 }

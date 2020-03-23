@@ -1,30 +1,16 @@
 package com.example.mvvmdiapplication.repository
 
-import androidx.lifecycle.LiveData
+import com.example.mvvmdiapplication.repository.retrofit.Fact
+import com.example.mvvmdiapplication.repository.retrofit.RemoteDao
 import com.example.mvvmdiapplication.repository.room.LocalDao
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class MainRepository(val remoteDao: RemoteDao, val localDao: LocalDao) {
+class MainRepository(private val remoteDao: RemoteDao, private val localDao: LocalDao) {
 
-    fun getFacts(): LiveData<List<Fact>> {
-
-        val retrofitCallback = object : Callback<APIResponse> {
-
-            override fun onFailure(call: Call<APIResponse>?, t: Throwable?) {
-            }
-
-            override fun onResponse(call: Call<APIResponse>?, r: Response<APIResponse>?) {
-                r?.body()?.let {
-                    localDao.deleteAllFacts()
-                    localDao.insertAll(it.rows)
-                }
-            }
-
-        }
-        remoteDao.getFactsFromAPI(retrofitCallback)
+    suspend fun getFacts(): List<Fact> {
+        val factResponse = remoteDao.getFactsFromAPI()
+        localDao.deleteAllFacts()
+        localDao.insertAll(factResponse.rows)
         return localDao.getAllFacts()
     }
 }

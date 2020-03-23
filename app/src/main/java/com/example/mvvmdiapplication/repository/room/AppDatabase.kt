@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.mvvmdiapplication.repository.Fact
+import com.example.mvvmdiapplication.repository.retrofit.Fact
 
-@Database(entities = [Fact::class], version = 1)
+@Database(entities = [Fact::class], version = 1 , exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun localDao(): LocalDao
     companion object {

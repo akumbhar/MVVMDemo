@@ -1,10 +1,9 @@
-package com.example.mvvmdiapplication.repository
+package com.example.mvvmdiapplication.repository.retrofit
 
-import retrofit2.Call
 import retrofit2.http.GET
 
 interface FactsAPI {
 
     @GET("facts.json")
-    fun getFacts(): Call<APIResponse>
+    suspend fun getFacts(): APIResponse
 }
