@@ -11,7 +11,8 @@ class ViewModelFactory(val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         when(modelClass){
-            MainViewModel::class.java -> return MainViewModel(MainRepository(RemoteDao(),AppDatabase.getInstance(context)!!.localDao())) as T
+            //MainViewModel::class.java -> return MainViewModel(MainRepository(RemoteDao(),AppDatabase.getInstance(context)!!.localDao())) as T
+            MainViewModel::class.java -> return MainViewModel() as T
             else -> throw IllegalArgumentException("Unknown ViewModel class");
         }
     }
