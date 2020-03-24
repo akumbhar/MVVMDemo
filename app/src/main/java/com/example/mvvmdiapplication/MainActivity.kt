@@ -3,19 +3,17 @@ package com.example.mvvmdiapplication
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmdiapplication.viewmodel.MainViewModel
-import com.example.mvvmdiapplication.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mViewModel: MainViewModel
+    private val mViewModel: MainViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mViewModel = ViewModelProvider(this, ViewModelFactory(this)).get(MainViewModel::class.java)
         mViewModel.getFacts()
         mViewModel.apiResponseLiveData.observe(this, Observer {
 

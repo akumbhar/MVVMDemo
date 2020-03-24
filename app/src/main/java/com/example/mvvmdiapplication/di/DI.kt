@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val appModule = module {
 
-    //single { MainViewModel(get()) }
+    single { MainViewModel(get()) }
     single { MainRepository(get(), get()) }
     single { RemoteDao(get()) }
 
