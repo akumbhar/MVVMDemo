@@ -3,20 +3,25 @@ package com.example.paypay.repository.retrofit
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.JsonObject
 
-data class APIResponse(
-    val rows: List<Fact>,
-    val title: String
-)
 
-@Entity(tableName = "facts")
-data class Fact(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long?,
-    @ColumnInfo(name = "title")
-    val title: String?,
+@Entity(tableName = "currency")
+data class Currency(
+    @PrimaryKey
+    @ColumnInfo(name = "currency")
+    val currencyName: String,
     @ColumnInfo(name = "description")
     val description: String?,
-    @ColumnInfo(name = "url")
-    val imageHref: String?
+    @ColumnInfo(name = "conversionRate")
+    val conversionRate: Double?
+)
+
+
+data class ConversionResponse(
+    val base: String,
+    val disclaimer: String,
+    val license: String,
+    val rates: JsonObject? = null,
+    val timestamp: Int
 )

@@ -19,13 +19,13 @@ class MainActivity : AppCompatActivity() {
         mViewModel.getFacts()
         mViewModel.apiResponseLiveData.observe(this, Observer {
 
-            var stringBuffer = StringBuffer()
+        /*    var stringBuffer = StringBuffer()
             it.forEach {
 
                 stringBuffer.append("${it.title}\n")
             }
 
-            txtData.text = stringBuffer.toString()
+            txtData.text = stringBuffer.toString()*/
         })
     }
 }

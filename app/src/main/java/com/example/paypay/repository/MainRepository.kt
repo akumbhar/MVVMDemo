@@ -1,33 +1,17 @@
 package com.example.paypay.repository
 
-import androidx.lifecycle.LiveData
-import com.example.paypay.repository.retrofit.APIResponse
-import com.example.paypay.repository.retrofit.Fact
+import com.example.paypay.repository.retrofit.Currency
 import com.example.paypay.repository.retrofit.RemoteDao
 import com.example.paypay.repository.room.LocalDao
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class MainRepository(val remoteDao: RemoteDao, val localDao: LocalDao) {
+class MainRepository(private val remoteDao: RemoteDao, val localDao: LocalDao) {
 
-    fun getFacts(): LiveData<List<Fact>> {
+    suspend fun getCurrencies() = remoteDao.getCurrencies()
+    suspend fun getConversions() = remoteDao.getCurrencyConversions()
 
-        val retrofitCallback = object : Callback<APIResponse> {
+    fun deleteAllCurrencies() = localDao.deleteAllCurrencies()
+    fun insertAllCurrencies(currencyList: List<Currency>) = localDao.insertAll(currencyList)
+    fun getAllCurrencies() = localDao.getAllCurrencies()
 
-            override fun onFailure(call: Call<APIResponse>?, t: Throwable?) {
-            }
-
-            override fun onResponse(call: Call<APIResponse>?, r: Response<APIResponse>?) {
-                r?.body()?.let {
-                    localDao.deleteAllFacts()
-                    localDao.insertAll(it.rows)
-                }
-            }
-
-        }
-        remoteDao.getFactsFromAPI(retrofitCallback)
-        return localDao.getAllFacts()
-    }
 }

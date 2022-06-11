@@ -5,18 +5,18 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.paypay.repository.retrofit.Fact
+import com.example.paypay.repository.retrofit.Currency
 
 @Dao
 interface LocalDao {
 
-    @Query("SELECT * FROM facts")
-    fun getAllFacts(): LiveData<List<Fact>>
+    @Query("SELECT * FROM currency")
+    fun getAllCurrencies(): LiveData<List<Currency>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(factList: List<Fact>)
+    fun insertAll(currencyList: List<Currency>)
 
-    @Query("DELETE FROM facts")
-    fun deleteAllFacts()
+    @Query("DELETE FROM currency")
+    fun deleteAllCurrencies()
 
 }

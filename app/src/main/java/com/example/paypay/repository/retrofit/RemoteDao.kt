@@ -2,30 +2,28 @@ package com.example.paypay.repository.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteDao {
 
-    val API_URL: String = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/";
-    private var service: FactsAPI
-    val TAG = RemoteDao::class.java.simpleName
+    private val apiUrl: String = "https://openexchangerates.org/api/";
+    private val apiKey: String = "169aa8bc9b9240e39937fad571042dd3";
+    private var service: CurrencyAPI
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
-        //loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY;
         val httpClient: OkHttpClient.Builder = OkHttpClient.Builder();
         httpClient.addInterceptor(loggingInterceptor)
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(API_URL)
+            .baseUrl(apiUrl)
             .client(httpClient.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-        service = retrofit.create(FactsAPI::class.java)
+        service = retrofit.create(CurrencyAPI::class.java)
     }
 
-    fun getFactsFromAPI(retrofitCallback: Callback<APIResponse>) {
-        service.getFacts().enqueue(retrofitCallback)
-    }
+    suspend fun getCurrencies() = service.getCurrencies(apiKey)
+    suspend fun getCurrencyConversions() = service.getConversions(apiKey)
 }
