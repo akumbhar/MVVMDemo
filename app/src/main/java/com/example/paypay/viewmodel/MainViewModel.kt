@@ -1,5 +1,6 @@
 package com.example.paypay.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.reflect.Type
 
-class MainViewModel(private val repository: MainRepository) : ViewModel() {
+class MainViewModel @ViewModelInject constructor(private val repository: MainRepository) : ViewModel() {
 
     private val apiResponseMutableLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     var apiResponseLiveData: LiveData<List<Currency>> = apiResponseMutableLiveData
@@ -36,7 +37,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
             apiResponseLiveData = repository.getAllCurrencies()
         }
-
     }
 
     private fun processData(
