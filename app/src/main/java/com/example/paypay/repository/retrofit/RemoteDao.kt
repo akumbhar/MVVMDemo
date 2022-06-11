@@ -1,4 +1,4 @@
-package com.example.mvvmdiapplication.repository
+package com.example.paypay.repository.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,11 +1,10 @@
-package com.example.mvvmdiapplication.viewmodel
+package com.example.paypay.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mvvmdiapplication.common.doLogE
-import com.example.mvvmdiapplication.repository.Fact
-import com.example.mvvmdiapplication.repository.MainRepository
+import com.example.paypay.repository.retrofit.Fact
+import com.example.paypay.repository.MainRepository
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 

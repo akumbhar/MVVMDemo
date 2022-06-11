@@ -1,11 +1,11 @@
-package com.example.mvvmdiapplication
+package com.example.paypay
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mvvmdiapplication.viewmodel.MainViewModel
-import com.example.mvvmdiapplication.viewmodel.ViewModelFactory
+import com.example.paypay.viewmodel.MainViewModel
+import com.example.paypay.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

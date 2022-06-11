@@ -1,10 +1,10 @@
-package com.example.mvvmdiapplication.repository.room
+package com.example.paypay.repository.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.mvvmdiapplication.repository.Fact
+import com.example.paypay.repository.retrofit.Fact
 
 @Database(entities = [Fact::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {

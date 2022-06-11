@@ -1,4 +1,4 @@
-package com.example.mvvmdiapplication.common
+package com.example.paypay.common
 
 import android.util.Log
 

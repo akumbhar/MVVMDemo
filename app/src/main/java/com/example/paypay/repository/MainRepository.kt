@@ -1,7 +1,10 @@
-package com.example.mvvmdiapplication.repository
+package com.example.paypay.repository
 
 import androidx.lifecycle.LiveData
-import com.example.mvvmdiapplication.repository.room.LocalDao
+import com.example.paypay.repository.retrofit.APIResponse
+import com.example.paypay.repository.retrofit.Fact
+import com.example.paypay.repository.retrofit.RemoteDao
+import com.example.paypay.repository.room.LocalDao
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

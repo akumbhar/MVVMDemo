@@ -1,4 +1,4 @@
-package com.example.mvvmdiapplication
+package com.example.paypay
 
 import org.junit.Test
 

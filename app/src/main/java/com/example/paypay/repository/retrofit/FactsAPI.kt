@@ -1,5 +1,6 @@
-package com.example.mvvmdiapplication.repository
+package com.example.paypay.repository.retrofit
 
+import com.example.paypay.repository.retrofit.APIResponse
 import retrofit2.Call
 import retrofit2.http.GET
 

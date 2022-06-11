@@ -1,4 +1,4 @@
-package com.example.mvvmdiapplication
+package com.example.paypay
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

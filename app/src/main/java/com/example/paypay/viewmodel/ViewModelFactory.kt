@@ -1,12 +1,11 @@
-package com.example.mvvmdiapplication.viewmodel
+package com.example.paypay.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mvvmdiapplication.repository.MainRepository
-import com.example.mvvmdiapplication.repository.RemoteDao
-import com.example.mvvmdiapplication.repository.room.AppDatabase
-import com.example.mvvmdiapplication.repository.room.LocalDao
+import com.example.paypay.repository.MainRepository
+import com.example.paypay.repository.retrofit.RemoteDao
+import com.example.paypay.repository.room.AppDatabase
 
 class ViewModelFactory(val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
