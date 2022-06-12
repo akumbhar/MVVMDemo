@@ -29,10 +29,7 @@ class MainActivity : AppCompatActivity() {
         currencyAdapter = CurrencyAdapter(currencyList)
         with(listCurrencies) {
             adapter = currencyAdapter
-            layoutManager = GridLayoutManager(
-                this@MainActivity,
-                columnCount
-            )
+            layoutManager = GridLayoutManager(this@MainActivity,columnCount)
         }
 
         mViewModel.getCurrencies()
@@ -43,31 +40,21 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mViewModel.updateValuesLiveData.observe(this, Observer { factor ->
-            doLogE("Convresion factor : $factor")
            currencyAdapter.updateConversionFactor(factor)
         })
 
+
         btnCalculate.setOnClickListener {
-
-
             val selectedCurrency = outlinedTextField.txtCurrencyDropDown.text.toString()
-
-            val inputValue: Double = try {
-                etInputCurrency.editText?.text.toString().toDouble()
-            } catch (e: Exception) {
-                0.0
-            }
-
-            if (inputValue == 0.0) {
-                etInputCurrency.error = "Please enter value"
-            } else {
-                it.hideKeyboard()
+            val inputAmount = etInputCurrency.editText?.text.toString()
+            val (isValid, amount) = mViewModel.validateFields(selectedCurrency, inputAmount)
+            if (isValid) {
+                etInputCurrency.hideKeyboard()
                 etInputCurrency.error = null
-                currencyAdapter.updateConversionFactor(inputValue)
+                mViewModel.updateCurrency(selectedCurrency, amount)
+            } else {
+                etInputCurrency.error = getString(R.string.validation_error)
             }
-
-            mViewModel.updateCurrency(selectedCurrency, inputValue)
-
         }
     }
 

@@ -11,7 +11,6 @@ import com.example.paypay.repository.retrofit.Currency
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -29,11 +28,11 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
 
     fun getCurrencies() {
         showHideLoadingLiveData.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
 
-            val currencies = async { repository.getCurrencies() }
-            val conversions = async { repository.getConversions() }
             try {
+                val currencies = async { repository.getCurrencies() }
+                val conversions = async { repository.getConversions() }
                 val currenciesResponse = currencies.await()
                 val conversionResponse = conversions.await()
                 processData(currenciesResponse, conversionResponse)
@@ -104,5 +103,14 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
         val calculatedConversionFactorByUSD =
             inputValue / selectedInputCurrency.conversionRate
         updateValuesLiveData.postValue(calculatedConversionFactorByUSD)
+    }
+
+    fun validateFields(currency: String?, amount: String?): Pair<Boolean, Double> {
+        val inputValue: Double = try {
+            amount.toString().toDouble()
+        } catch (e: java.lang.Exception) {
+            0.0
+        }
+        return Pair(inputValue != 0.0 && !currency.isNullOrEmpty(), inputValue)
     }
 }
