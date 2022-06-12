@@ -14,7 +14,7 @@ data class Currency(
     @ColumnInfo(name = "description")
     val description: String?,
     @ColumnInfo(name = "conversionRate")
-    val conversionRate: Double?
+    val conversionRate: Double = 0.0
 )
 
 

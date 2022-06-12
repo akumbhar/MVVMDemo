@@ -2,6 +2,9 @@ package com.example.paypay
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
 
 @HiltAndroidApp
 class CurrencyConverterApplication : Application() {
@@ -13,5 +16,6 @@ class CurrencyConverterApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        Timber.plant(DebugTree())
     }
 }

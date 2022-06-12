@@ -5,10 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.paypay.common.doLogE
-import com.example.paypay.repository.retrofit.Currency
 import com.example.paypay.repository.MainRepository
 import com.example.paypay.repository.retrofit.ConversionResponse
+import com.example.paypay.repository.retrofit.Currency
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -18,12 +17,19 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.reflect.Type
 
-class MainViewModel @ViewModelInject constructor(private val repository: MainRepository) : ViewModel() {
+class MainViewModel @ViewModelInject constructor(private val repository: MainRepository) :
+    ViewModel() {
 
     private val apiResponseMutableLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     var apiResponseLiveData: LiveData<List<Currency>> = apiResponseMutableLiveData
 
-    fun getFacts() {
+    val showLoadingLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val hideLoadingLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val showUIErrorLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val updateValuesLiveData: MutableLiveData<Double> = MutableLiveData()
+
+
+    fun getCurrencies() {
         viewModelScope.launch(Dispatchers.IO) {
             val currencies = async { repository.getCurrencies() }
             val conversions = async { repository.getConversions() }
@@ -33,9 +39,9 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
                 processData(currenciesResponse, conversionResponse)
             } catch (ex: Exception) {
                 ex.printStackTrace()
+                showUIErrorLiveData.postValue(Unit)
             }
 
-            apiResponseLiveData = repository.getAllCurrencies()
         }
     }
 
@@ -43,7 +49,6 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
         currenciesResponse: Response<JsonObject>,
         conversionResponse: Response<ConversionResponse>
     ) {
-
         val currencyMap: HashMap<String, String>? = try {
             currenciesResponse.body()?.let {
                 val type: Type = object : TypeToken<HashMap<String?, String?>?>() {}.type
@@ -84,7 +89,17 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
             }
         }
 
-        repository.deleteAllCurrencies()
-        repository.insertAllCurrencies(listCurrencies)
+        if (listCurrencies.isNotEmpty()) {
+            repository.deleteAllCurrencies()
+            repository.insertAllCurrencies(listCurrencies)
+            apiResponseMutableLiveData.postValue(repository.getAllCurrencies())
+        }
+    }
+
+    fun updateCurrency(selectedCurrency: String?, inputValue: Double) {
+        val selectedInputCurrency = repository.getCurrencyById(selectedCurrency ?: "USD")
+        val calculatedConversionFactorByUSD =
+            inputValue / selectedInputCurrency.conversionRate
+        updateValuesLiveData.postValue(calculatedConversionFactorByUSD)
     }
 }

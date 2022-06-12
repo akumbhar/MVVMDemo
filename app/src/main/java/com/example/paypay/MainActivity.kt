@@ -7,56 +7,74 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.paypay.common.doLogE
+import com.example.paypay.common.hideKeyboard
 import com.example.paypay.repository.retrofit.Currency
 import com.example.paypay.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.lang.Exception
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mViewModel: MainViewModel by viewModels()
     private val columnCount = 3
+    private var currencyList = listOf<Currency>()
+    lateinit var currencyAdapter: CurrencyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mViewModel.getFacts()
-        mViewModel.apiResponseLiveData.observe(this, Observer { it ->
-
-            doLogE("Total currencies - ${it.size}")
-            var stringBuffer = StringBuffer()
-            it.forEach {
-
-                stringBuffer.append("${it.currencyName} - ${it.description} - ${it.conversionRate}\n")
-            }
-
-//                txtData.text = stringBuffer.toString()
-        })
-
-        val currencyList = listOf(
-            Currency("AED", "United Arab Emirates Dirham", 3.6731),
-            Currency("AFN", "Afghan Afghani", 88.999995),
-            Currency("ALL", "Albanian Lek", 112.95),
-            Currency("AMD", "Armenian Dram", 429.910968),
-            Currency("AFN", "Afghan Afghani", 88.999995),
-            Currency("ALL", "Albanian Lek", 112.95),
-            Currency("AMD", "Armenian Dram", 429.910968),
-            Currency("ANG", "Netherlands Antillean Guilder", 1.803037)
-        )
-
+        currencyAdapter = CurrencyAdapter(currencyList)
         with(listCurrencies) {
-            adapter = CurrencyAdapter(currencyList)
+            adapter = currencyAdapter
             layoutManager = GridLayoutManager(
                 this@MainActivity,
                 columnCount
             )
         }
 
+        mViewModel.getCurrencies()
+        mViewModel.apiResponseLiveData.observe(this, Observer { currencyList ->
+            currencyList?.let {
+                currencyAdapter.updateList(it)
+                setDropDownList(it)
+            }
+        })
+        mViewModel.updateValuesLiveData.observe(this, Observer { factor ->
+            doLogE("Convresion factor : $factor")
+           currencyAdapter.updateConversionFactor(factor)
+        })
 
-        val items = listOf("Material", "Design", "Components", "Android")
-        val adapter = ArrayAdapter(this, R.layout.dropdown_text_row, items)
+        btnCalculate.setOnClickListener {
+
+
+            val selectedCurrency = outlinedTextField.txtCurrencyDropDown.text.toString()
+
+            val inputValue: Double = try {
+                etInputCurrency.editText?.text.toString().toDouble()
+            } catch (e: Exception) {
+                0.0
+            }
+
+            if (inputValue == 0.0) {
+                etInputCurrency.error = "Please enter value"
+            } else {
+                it.hideKeyboard()
+                etInputCurrency.error = null
+                currencyAdapter.updateConversionFactor(inputValue)
+            }
+
+            mViewModel.updateCurrency(selectedCurrency, inputValue)
+
+        }
+    }
+
+    private fun setDropDownList(list: List<Currency>) {
+        val currencyListForDropDown = mutableListOf<String>()
+        list.map { currencyListForDropDown.add(it.currencyName) }
+        val adapter = ArrayAdapter(this, R.layout.dropdown_text_row, currencyListForDropDown)
         txtCurrencyDropDown.setAdapter(adapter)
     }
 }
