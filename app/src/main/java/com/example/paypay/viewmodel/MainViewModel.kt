@@ -22,15 +22,15 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
 
     private val apiResponseMutableLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     var apiResponseLiveData: LiveData<List<Currency>> = apiResponseMutableLiveData
-
-    val showLoadingLiveData: MutableLiveData<Unit> = MutableLiveData()
-    val hideLoadingLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val showHideLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val showUIErrorLiveData: MutableLiveData<Unit> = MutableLiveData()
     val updateValuesLiveData: MutableLiveData<Double> = MutableLiveData()
 
 
     fun getCurrencies() {
+        showHideLoadingLiveData.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
+
             val currencies = async { repository.getCurrencies() }
             val conversions = async { repository.getConversions() }
             try {
@@ -39,7 +39,9 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
                 processData(currenciesResponse, conversionResponse)
             } catch (ex: Exception) {
                 ex.printStackTrace()
+                showHideLoadingLiveData.postValue(false)
                 showUIErrorLiveData.postValue(Unit)
+
             }
 
         }
@@ -92,6 +94,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
         if (listCurrencies.isNotEmpty()) {
             repository.deleteAllCurrencies()
             repository.insertAllCurrencies(listCurrencies)
+            showHideLoadingLiveData.postValue(false)
             apiResponseMutableLiveData.postValue(repository.getAllCurrencies())
         }
     }
