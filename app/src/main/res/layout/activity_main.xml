@@ -32,34 +32,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etInputCurrency" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-        android:layout_width="104dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:minWidth="96dp"
-        app:endIconMode="dropdown_menu"
-        app:layout_constraintEnd_toStartOf="@id/btnCalculate"
-        app:layout_constraintTop_toBottomOf="@id/etInputCurrency">
-
-        <AutoCompleteTextView
-            android:id="@+id/txtCurrencyDropDown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:text="@string/usd" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listCurrencies"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/outlinedTextField" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
