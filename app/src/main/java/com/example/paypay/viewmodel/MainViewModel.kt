@@ -1,18 +1,14 @@
 package com.example.paypay.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.paypay.repository.MainRepository
 import com.example.paypay.repository.retrofit.ConversionResponse
 import com.example.paypay.repository.retrofit.Currency
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Response
 import java.lang.reflect.Type
 
@@ -113,4 +109,32 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
         }
         return Pair(inputValue != 0.0 && !currency.isNullOrEmpty(), inputValue)
     }
+
+    fun insertValueToPrefs(value:String) = repository.insertToSharedPrefs(value)
+
+
+    val myEmitLiveData = MutableLiveData<Int>()
+
+
+    fun doSomething() {
+
+        viewModelScope.launch(Dispatchers.Main) {
+
+//            myEmitLiveData.postValue(1)
+//            myEmitLiveData.postValue(2)
+//            myEmitLiveData.postValue(3)
+//            myEmitLiveData.postValue(4)
+//            myEmitLiveData.postValue(5)
+
+            myEmitLiveData.value = 1
+            myEmitLiveData.value = 2
+            myEmitLiveData.value = 3
+            myEmitLiveData.value = 4
+            myEmitLiveData.value = 5
+
+        }
+
+
+    }
+
 }

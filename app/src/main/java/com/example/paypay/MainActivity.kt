@@ -13,7 +13,6 @@ import com.example.paypay.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
-import java.lang.Exception
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -43,6 +42,11 @@ class MainActivity : AppCompatActivity() {
            currencyAdapter.updateConversionFactor(factor)
         })
 
+        mViewModel.doSomething()
+        mViewModel.myEmitLiveData.observe(this, Observer { factor ->
+
+        doLogE("Emitted value is $factor")
+        })
 
         btnCalculate.setOnClickListener {
             val selectedCurrency = outlinedTextField.txtCurrencyDropDown.text.toString()
@@ -56,6 +60,14 @@ class MainActivity : AppCompatActivity() {
                 etInputCurrency.error = getString(R.string.validation_error)
             }
         }
+
+
+
+
+        mViewModel.insertValueToPrefs("Hello")
+
+
+
     }
 
     private fun setDropDownList(list: List<Currency>) {
