@@ -1,6 +1,4 @@
-package com.example.paypay;
-
-import android.util.ArrayMap;
+package com.example.assignment;
 
 public class MySortArrary {
 

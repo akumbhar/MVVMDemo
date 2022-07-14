@@ -1,4 +1,4 @@
-package com.example.paypay.repository.retrofit
+package com.example.assignment.repository.retrofit
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,9 +1,9 @@
-package com.example.paypay.viewmodel
+package com.example.assignment.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.paypay.repository.MainRepository
-import com.example.paypay.repository.retrofit.ConversionResponse
-import com.example.paypay.utils.MainCoroutineRule
+import com.example.assignment.repository.MainRepository
+import com.example.assignment.repository.retrofit.ConversionResponse
+import com.example.assignment.utils.MainCoroutineRule
 import com.google.gson.Gson
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.times

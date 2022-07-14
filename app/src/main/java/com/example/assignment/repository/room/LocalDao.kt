@@ -1,11 +1,10 @@
-package com.example.paypay.repository.room
+package com.example.assignment.repository.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.paypay.repository.retrofit.Currency
+import com.example.assignment.repository.retrofit.Currency
 
 @Dao
 interface LocalDao {

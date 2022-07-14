@@ -1,4 +1,4 @@
-package com.example.paypay
+package com.example.assignment
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
@@ -7,10 +7,10 @@ import timber.log.Timber.DebugTree
 
 
 @HiltAndroidApp
-class CurrencyConverterApplication : Application() {
+class SongsApplication : Application() {
 
     companion object {
-        lateinit var instance: CurrencyConverterApplication
+        lateinit var instance: SongsApplication
     }
 
     override fun onCreate() {

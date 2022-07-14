@@ -8,7 +8,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.example.paypay"
+        applicationId "com.example.assignment"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -67,6 +67,8 @@ dependencies {
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01")
     kapt("androidx.hilt:hilt-compiler:1.0.0-alpha01")
     kapt("com.google.dagger:hilt-android-compiler:2.28-alpha")
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+
 
     implementation 'com.google.android.material:material:1.4.0'
 
@@ -82,6 +84,12 @@ dependencies {
     testImplementation ("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
+    implementation 'com.tickaroo.tikxml:annotation:0.8.13'
+    implementation 'com.tickaroo.tikxml:core:0.8.13'
+    kapt 'com.tickaroo.tikxml:processor:0.8.13'
+    implementation 'com.tickaroo.tikxml:retrofit-converter:0.8.13'
 
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
 }

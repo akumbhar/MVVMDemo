@@ -1,14 +1,14 @@
-package com.example.paypay.di
+package com.example.assignment.di
 
-import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.paypay.CurrencyConverterApplication
-import com.example.paypay.repository.retrofit.CurrencyAPI
-import com.example.paypay.repository.room.AppDatabase
-import com.example.paypay.repository.room.DATABASE_NAME
-import com.example.paypay.repository.room.LocalDao
+import com.example.assignment.SongsApplication
+import com.example.assignment.repository.retrofit.CurrencyAPI
+import com.example.assignment.repository.room.AppDatabase
+import com.example.assignment.repository.room.DATABASE_NAME
+import com.example.assignment.repository.room.LocalDao
+import com.tickaroo.tikxml.TikXml
+import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,18 +16,16 @@ import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
-const val API_URL: String = "https://openexchangerates.org/api/";
-const val API_KEY: String = "169aa8bc9b9240e39937fad571042dd3";
-const val SHARED_PREFS_FILE: String = "myAppSharedPrefs";
+const val API_URL: String =
+    "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topsongs/limit=25/";
+
 
 @InstallIn(ApplicationComponent::class)
 @Module
 object AppModule {
-
 
     @Singleton
     @Provides
@@ -39,19 +37,25 @@ object AppModule {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
             .client(httpClient.build())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                TikXmlConverterFactory.create(
+                    TikXml.Builder()
+                        .exceptionOnUnreadXml(false)
+                        .build()
+                )
+            )
+
             .build();
         return retrofit.create(CurrencyAPI::class.java)
     }
-
 
     @Singleton
     @Provides
     fun provideDao(context: Context): LocalDao {
         var dbInstance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java, DATABASE_NAME
-                ).allowMainThreadQueries().build()
+            context.applicationContext,
+            AppDatabase::class.java, DATABASE_NAME
+        ).allowMainThreadQueries().build()
 
 
         return dbInstance!!.localDao()
@@ -61,15 +65,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApplication(): Context {
-        return CurrencyConverterApplication.instance.applicationContext
+        return SongsApplication.instance.applicationContext
     }
-
-
-    @Singleton
-    @Provides
-    fun providePreferenceHelper(context: Context): SharedPreferences {
-        return context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE)
-    }
-
 }
 

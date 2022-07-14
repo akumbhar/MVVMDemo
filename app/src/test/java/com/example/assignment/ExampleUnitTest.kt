@@ -1,6 +1,5 @@
-package com.example.paypay
+package com.example.assignment
 
-import android.util.ArrayMap
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

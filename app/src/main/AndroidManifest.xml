@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.paypay">
+    package="com.example.assignment">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -9,9 +9,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents"
-        android:name=".CurrencyConverterApplication">
-        <activity android:name="com.example.paypay.MainActivity">
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        android:usesCleartextTraffic="true"
+        android:name="com.example.assignment.SongsApplication">
+        <activity android:name="com.example.assignment.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

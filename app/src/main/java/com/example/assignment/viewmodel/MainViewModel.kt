@@ -1,45 +1,60 @@
-package com.example.paypay.viewmodel
+package com.example.assignment.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.example.paypay.repository.MainRepository
-import com.example.paypay.repository.retrofit.ConversionResponse
-import com.example.paypay.repository.retrofit.Currency
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.assignment.common.Song
+import com.example.assignment.repository.MainRepository
+import com.example.assignment.repository.retrofit.ConversionResponse
+import com.example.assignment.repository.retrofit.Currency
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.reflect.Type
 
 class MainViewModel @ViewModelInject constructor(private val repository: MainRepository) :
     ViewModel() {
 
-    private val apiResponseMutableLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
-    var apiResponseLiveData: LiveData<List<Currency>> = apiResponseMutableLiveData
+    private val apiResponseMutableLiveData: MutableLiveData<List<Song>> = MutableLiveData()
+    var apiResponseLiveData: LiveData<List<Song>> = apiResponseMutableLiveData
     val showHideLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val showUIErrorLiveData: MutableLiveData<Unit> = MutableLiveData()
     val updateValuesLiveData: MutableLiveData<Double> = MutableLiveData()
 
 
-    fun getCurrencies() {
+    fun getSongs() {
         showHideLoadingLiveData.postValue(true)
-        viewModelScope.launch {
 
+        viewModelScope.launch {
             try {
-                val currencies = async { repository.getCurrencies() }
-                val conversions = async { repository.getConversions() }
-                val currenciesResponse = currencies.await()
-                val conversionResponse = conversions.await()
-                processData(currenciesResponse, conversionResponse)
+                val currencies = async { repository.getSongs() }
+                val conversionResponse = currencies.await()
+                if (conversionResponse.isSuccessful) {
+                    conversionResponse.body()?.albumList?.let {
+//                        repository.deleteAllCurrencies()
+//                        repository.insertAllCurrencies(it)
+                        showHideLoadingLiveData.postValue(false)
+                        apiResponseMutableLiveData.postValue(it)
+                    }
+                } else {
+                    showError()
+                }
             } catch (ex: Exception) {
                 ex.printStackTrace()
-                showHideLoadingLiveData.postValue(false)
-                showUIErrorLiveData.postValue(Unit)
-
+                showError()
             }
 
         }
+    }
+
+    private fun showError() {
+        showHideLoadingLiveData.postValue(false)
+        showUIErrorLiveData.postValue(Unit)
     }
 
     private fun processData(
@@ -86,12 +101,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
             }
         }
 
-        if (listCurrencies.isNotEmpty()) {
-            repository.deleteAllCurrencies()
-            repository.insertAllCurrencies(listCurrencies)
-            showHideLoadingLiveData.postValue(false)
-            apiResponseMutableLiveData.postValue(repository.getAllCurrencies())
-        }
+
     }
 
     fun updateCurrency(selectedCurrency: String?, inputValue: Double) {
@@ -110,31 +120,5 @@ class MainViewModel @ViewModelInject constructor(private val repository: MainRep
         return Pair(inputValue != 0.0 && !currency.isNullOrEmpty(), inputValue)
     }
 
-    fun insertValueToPrefs(value:String) = repository.insertToSharedPrefs(value)
-
-
-    val myEmitLiveData = MutableLiveData<Int>()
-
-
-    fun doSomething() {
-
-        viewModelScope.launch(Dispatchers.Main) {
-
-//            myEmitLiveData.postValue(1)
-//            myEmitLiveData.postValue(2)
-//            myEmitLiveData.postValue(3)
-//            myEmitLiveData.postValue(4)
-//            myEmitLiveData.postValue(5)
-
-            myEmitLiveData.value = 1
-            myEmitLiveData.value = 2
-            myEmitLiveData.value = 3
-            myEmitLiveData.value = 4
-            myEmitLiveData.value = 5
-
-        }
-
-
-    }
 
 }

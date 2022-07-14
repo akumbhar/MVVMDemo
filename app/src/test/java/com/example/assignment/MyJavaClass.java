@@ -1,4 +1,4 @@
-package com.example.paypay;
+package com.example.assignment;
 
 public abstract class MyJavaClass {
 

@@ -1,4 +1,4 @@
-package com.example.paypay.utils
+package com.example.assignment.utils
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

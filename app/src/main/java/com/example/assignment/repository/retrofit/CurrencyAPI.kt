@@ -1,5 +1,6 @@
-package com.example.paypay.repository.retrofit
+package com.example.assignment.repository.retrofit
 
+import com.example.assignment.common.Album
 import com.google.gson.JsonObject
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,4 +13,7 @@ interface CurrencyAPI {
 
     @GET("latest.json")
     suspend fun getConversions(@Query("app_id") id: String): Response<ConversionResponse>
+
+    @GET("xml")
+    suspend fun getXmlConversions(): Response<Album>
 }
