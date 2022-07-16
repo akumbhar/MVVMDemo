@@ -63,7 +63,7 @@ class MainViewModelTest {
     fun `return false if valid input invalid currency amount`() {
         val invalidCurrency = "USD"
         val validEnteredAmount = null
-        Assert.assertFalse(viewModel.validateFields(invalidCurrency, validEnteredAmount).first)
+        Assert.assertTrue(viewModel.validateFields(invalidCurrency, validEnteredAmount).first)
     }
 
     @Test
