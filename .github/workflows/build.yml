@@ -7,7 +7,7 @@ on:
     branches: [ "project_updated" ]
 
 jobs:
-  test:
+  build:
     name: Generate Build
     runs-on: ubuntu-latest
 
