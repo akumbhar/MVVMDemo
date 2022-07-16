@@ -24,6 +24,7 @@ import retrofit2.Response
 @RunWith(JUnit4::class)
 class MainViewModelTest {
 
+
     lateinit var viewModel: MainViewModel
 
     @Mock
