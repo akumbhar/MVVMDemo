@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.paypay.common.doLogE
 import com.example.paypay.common.hideKeyboard
@@ -13,6 +14,8 @@ import com.example.paypay.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,9 +31,16 @@ class MainActivity : AppCompatActivity() {
         currencyAdapter = CurrencyAdapter(currencyList)
         with(listCurrencies) {
             adapter = currencyAdapter
-            layoutManager = GridLayoutManager(this@MainActivity,columnCount)
+            layoutManager = GridLayoutManager(this@MainActivity, columnCount)
         }
 
+//        doCurrencyThing()
+//        doLiveDataThing()
+        doKotlinFlowThing()
+
+    }
+
+    private fun doCurrencyThing() {
         mViewModel.getCurrencies()
         mViewModel.apiResponseLiveData.observe(this, Observer { currencyList ->
             currencyList?.let {
@@ -39,13 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mViewModel.updateValuesLiveData.observe(this, Observer { factor ->
-           currencyAdapter.updateConversionFactor(factor)
-        })
-
-        mViewModel.doSomething()
-        mViewModel.myEmitLiveData.observe(this, Observer { factor ->
-
-        doLogE("Emitted value is $factor")
+            currencyAdapter.updateConversionFactor(factor)
         })
 
         btnCalculate.setOnClickListener {
@@ -60,14 +64,6 @@ class MainActivity : AppCompatActivity() {
                 etInputCurrency.error = getString(R.string.validation_error)
             }
         }
-
-
-
-
-        mViewModel.insertValueToPrefs("Hello")
-
-
-
     }
 
     private fun setDropDownList(list: List<Currency>) {
@@ -76,4 +72,35 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, R.layout.dropdown_text_row, currencyListForDropDown)
         txtCurrencyDropDown.setAdapter(adapter)
     }
+
+    private fun doKotlinFlowThing() {
+        mViewModel.loadViaApi()
+        lifecycleScope.launch {
+            mViewModel.sharedFlowEmit.collect { operation ->
+                when (operation) {
+                    is MainViewModel.Operation.ShowLoading -> {
+                        doLogE("ShowLoading")
+                    }
+                    is MainViewModel.Operation.HideLoading -> {
+                        doLogE("HideLoading")
+                    }
+                    is MainViewModel.Operation.GetDataSuccess -> {
+                        doLogE("GetDataSuccess - ${operation.dataList.size}")
+                    }
+                    is MainViewModel.Operation.ApiError -> {
+                        doLogE("GetDataSuccess - ${operation.message}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun doLiveDataThing() {
+        mViewModel.doLiveDataEmit()
+        mViewModel.myEmitLiveData.observe(this, Observer { factor ->
+            doLogE("Live Data $factor")
+        })
+    }
+
+
 }

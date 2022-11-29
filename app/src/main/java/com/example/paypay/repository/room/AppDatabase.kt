@@ -8,7 +8,7 @@ import com.example.paypay.repository.retrofit.Currency
 
 const val DATABASE_NAME = "currencyDB"
 
-@Database(entities = [Currency::class], version = 1)
+@Database(entities = [Currency::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun localDao(): LocalDao
 }
